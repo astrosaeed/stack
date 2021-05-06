@@ -27,9 +27,12 @@ class STACK_dataset(VisionDataset):
         ("http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz", "ec29112dd5afa0611ce80d1b7f02629c")
     ]
 
-    training_file = '/home/saeid/data/training.pt'
+    training_file = '/home/saeid/stack/data/training.pt' ##############3fix
+    test_file = '/home/saeid/stack/data/test.pt'
 
-    test_file = '/home/saeid/data/test.pt'
+    #training_file = '/home/saeid/stack/data_old/training.pt' ##############3fix
+    #test_file = '/home/saeid/stack/data_old/test.pt'
+
     classes = ['stable','unstable']
 
     @property
@@ -91,8 +94,11 @@ class STACK_dataset(VisionDataset):
 
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
+        print (index)
+        #input()
+        #img = Image.fromarray(img.numpy(), mode='L')
         img = Image.fromarray(img.numpy(), mode='L')
-
+        #input()
         if self.transform is not None:
             img = self.transform(img)
 
