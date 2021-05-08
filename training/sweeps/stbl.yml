@@ -1,0 +1,33 @@
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - "--wandb"
+  - ${args}
+program: training/run_experiment.py
+method: random
+metric:
+  goal: minimize
+  name: val_loss
+early_terminate:
+  type: hyperband
+  min_iter: 20
+parameters:
+  conv_dim:
+    values: [32, 64,128]
+  fc_dim:
+    values: [256,512, 1024]
+  lr:
+    values: [0.01, 0.001, 0.0003]
+  num_workers:
+    value: 2
+  gpus:
+    value: -1
+  data_class:
+    value: STACK
+  model_class:
+    value: CNN
+  loss:
+    value: cross_entropy
+  precision:
+    value: 16

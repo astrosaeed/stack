@@ -1,7 +1,7 @@
-from robot_saeid import Robot
+from coppelia_simulator.robot import Robot
 import numpy as np
 import time
-from simulation import vrep
+from coppelia_simulator import vrep
 import cv2
 import matplotlib.pyplot as plt
 import random
@@ -56,7 +56,7 @@ class StackingScene:
 			#img = np.array(image,dtype=np.uint8)
 			img = np.array(image,dtype=np.uint8)
 			img.resize([resolution[1],resolution[0],3])
-			print (img.shape)
+			#print (img.shape)
 			#print (img)
 			#plt.imshow(img)
 			#img =cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -73,7 +73,7 @@ class StackingScene:
 
 	def set_the_scene(self):
 		# Select the random location of the first item
-		print (self.object_list)
+		#print (self.object_list)
 		
 #		time.sleep(2)
 		first_object = random.choice(self.object_list)
@@ -87,9 +87,10 @@ class StackingScene:
 
 		random.shuffle(self.object_list) 
 		for i,obj in enumerate(self.object_list):
-			print (top_object_z)
-			#self.set_object_position(obj,0,0,0.01*(i+1))
-			self.set_object_position(obj,0,0,obj_geometry[obj][2]/2+top_object_z+obj_geometry[top_object][2]/2)
+			#print (top_object_z)
+			noise_x = random.choice([0.004,0.003,0.002,0.001,0,-0.001,-0.002,-0.003,-0.004])
+			noise_y = random.choice([0.004,0.003,0.002,0.001,0,-0.001,-0.002,-0.003,-0.004])
+			self.set_object_position(obj,noise_x,noise_y,obj_geometry[obj][2]/2+top_object_z+obj_geometry[top_object][2]/2)
 			x,y,z = self.get_object_position(obj)
 			#print (obj_geometry[top_object][2])
 			#input()
@@ -138,11 +139,13 @@ class StackingScene:
 
 
 def main():
-
-	for i in range(2,len(obj_geometry.keys())):
+	#for i in range(2,len(obj_geometry.keys())):
+	for i in range(4,len(obj_geometry.keys())):
 
 		obj = StackingScene(i)
-		for j in range(10000):
+		for j in range(2000):
+			print ('i: ',i)
+			print ('j/100: ', j/100)
 			obj.run_trial_stability()
 			obj.initialize_objects(i)
 
